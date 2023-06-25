@@ -24,4 +24,5 @@ class FundRaiserService {
 
 }
 
-module.exports = new FundRaiserService();
+FundRaiserService = new FundRaiserService();
+module.exports = FundRaiserService

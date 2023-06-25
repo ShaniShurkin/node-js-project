@@ -3,7 +3,7 @@ const fundRaiserService = require('../services/fundRaiserService');
 const router = express.Router();
 const logger = require('../middlewares/logger');
 
-router.get('/get/', async (req, res) => {
+router.get('/get', async (req, res) => {
     res.send(await fundRaiserService.getFundRaisers());
 });
 router.get('/get/:id', async (req, res) => {

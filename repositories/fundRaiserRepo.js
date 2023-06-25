@@ -20,15 +20,15 @@ class FundRaiserRepository {
     }
 
     async getFundRaiserById(id) {
-        let fundRaiser_ = {}
+        let _fundRaiser = {}
         try {
-            fundRaiser_ = await fundRaiser.find({ id: id });
-            console.log('fundRaisers:::', fundRaiser_);
+            _fundRaiser = await fundRaiser.find({ id: id });
+            
 
         } catch (error) {
             logger.error(error)
         }
-        return fundRaiser_;
+        return _fundRaiser;
     }
 
 
