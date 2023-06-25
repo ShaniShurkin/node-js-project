@@ -11,8 +11,6 @@ class GroupRepository {
         let groups = {}
         try {
             groups = await group.find({});
-            console.log('groups:::', groups);
-
         } catch (error) {
             logger.error(error)
         }
@@ -23,8 +21,6 @@ class GroupRepository {
         let group_ = {}
         try {
             group_ = await group.find({ id: id });
-            console.log("id: "+id)
-            console.log("group: "+group_)
         } catch (error) {
             logger.error(error)
         }
@@ -33,6 +29,8 @@ class GroupRepository {
 
 
     async createGroup(_group) {
+        console.log("gggggggggg")
+        console.log(_group);
         let data = ""
         try {
             data = await group.create(_group);

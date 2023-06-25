@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const groupSchema = mongoose.Schema({
-    id: {type: Number, unique: true},
+    //id: {type: Number, unique: true},
+    id: Number,
     name: String, 
     target: Number, 
     currentAmount: Number,

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const campaignSchema = mongoose.Schema({
-    id: {type: Number, unique: true},
+    //id: {type: Number, unique: true},
+    id: Number,
     name: String, 
     target: Number, 
     currentAmount: Number,

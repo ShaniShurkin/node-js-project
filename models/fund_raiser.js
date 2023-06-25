@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const fundRaiserSchema = mongoose.Schema({
-    id: {type: String, unique: true},
+    //id: {type: String, unique: true},
+    id: String,
     name: String, 
     target: Number, 
     currentAmount: Number,
