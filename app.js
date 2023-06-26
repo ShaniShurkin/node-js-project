@@ -1,5 +1,6 @@
-const express = require('express')
+const express = require('express');
 const logger = require('./middlewares/logger');
+const errorHandling = require('./middlewares/errorHandling');
 require('dotenv').config();
 
 const campaigns = require('./routes/campaign');
@@ -18,7 +19,7 @@ app.use('/api/groups', groups);
 app.use('/api/fund-raisers', fundRaisers);
 app.use('/api/donations', donations);
 
-
+app.use(errorHandling)
 
 //app.use(logger('end'));//will apply this middlware only if the response was not closed before
 

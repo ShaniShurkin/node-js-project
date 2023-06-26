@@ -10,6 +10,12 @@ class FundRaiserService {
     async getFundRaiserById(id) {
         return await fundRaiserRepository.getFundRaiserById(id);
     }
+    async getFundRaisersByGroup(groupId){
+        return await fundRaiserRepository.getFundRaisersByGroup(groupId)
+    }
+    async getFundRaisersByCampaign(campaignId){
+        return await fundRaiserRepository.getFundRaisersByCampaign(campaignId)
+    }
     async createFundRaiser(fundRaiser) {
         return await fundRaiserRepository.createFundRaiser(fundRaiser);
     }

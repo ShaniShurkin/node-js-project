@@ -12,8 +12,6 @@ class DonationRepository {
         let donations = {}
         try {
             donations = await donation.find({});
-            console.log('donations:::', donations);
-
         } catch (error) {
             logger.error(error)
         }
@@ -31,7 +29,33 @@ class DonationRepository {
         }
         return _donation;
     }
-
+    async getDonationByFundRaiser(fundRaiserId) {
+        let donations = []
+        try {
+            donations = await donation.find({ fundRaiserId: fundRaiserId });
+        } catch (error) {
+            logger.error(error)
+        }
+        return donations;
+    }
+    async getDonationByGroup(groupId) {
+        let donations = []
+        try {
+            donations = await donation.find({ groupId: groupId });
+        } catch (error) {
+            logger.error(error)
+        }
+        return donations;
+    }
+    async getDonationByCampaign(campaignId) {
+        let donations = []
+        try {
+            donations = await donation.find({ campaignId: campaignId });
+        } catch (error) {
+            logger.error(error)
+        }
+        return donations;
+    }
 
     async createDonation(_donation) {
         let data = ""

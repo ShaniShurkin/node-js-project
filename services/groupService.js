@@ -10,6 +10,9 @@ class GroupService {
     async getGroupById(id) {
         return await groupRepository.getGroupById(id);
     }
+    async getGroupsByCampaign(campaignId){
+        return await groupRepository.getGroupsByCampaign(campaignId);
+    }
     async createGroup(group) {
         return await groupRepository.createGroup(group);
     }
@@ -24,4 +27,5 @@ class GroupService {
 
 }
 
-module.exports = new GroupService();
+GroupService = new GroupService();
+module.exports = GroupService

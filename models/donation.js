@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const donationSchema = mongoose.Schema({
     //id: {type: Number, unique: true},
-    id: Number,
+    id:{
+        type: Number,
+        required: true
+      },
     fundRaiserId:String,
     donorName:String,
     amount: Number,

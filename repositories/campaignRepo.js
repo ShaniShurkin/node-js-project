@@ -16,6 +16,8 @@ class CampaignRepository {
 
         } catch (error) {
             logger.error(error)
+            campaigns = error
+           
         }
         return campaigns;
     }
@@ -28,6 +30,7 @@ class CampaignRepository {
 
         } catch (error) {
             logger.error(error)
+            _campaign = error
         }
         return _campaign;
     }

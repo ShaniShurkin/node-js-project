@@ -30,8 +30,27 @@ class FundRaiserRepository {
         }
         return _fundRaiser;
     }
+    async getFundRaisersByGroup(groupId) {
+        let fundRaisers = []
+        try {
+            fundRaisers = await fundRaiser.find({ groupId: groupId });
+            console.log("ddddddddd")
+            console.log(fundRaisers)
 
-
+        } catch (error) {
+            logger.error(error)
+        }
+        return fundRaisers;
+    }
+    async getFundRaisersByCampaign(campaignId) {
+        let fundRaisers = []
+        try {
+            fundRaisers = await fundRaiser.find({ campaignId: campaignId });
+         } catch (error) {
+            logger.error(error)
+        }
+        return fundRaisers;
+    }
     async createFundRaiser(_fundRaiser) {
         let data = ""
         try {

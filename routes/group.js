@@ -10,6 +10,10 @@ router.get('/get/:id', async (req, res) => {
     var groupId = req.params['id'];
     res.send(await groupService.getGroupById(groupId));
 });
+router.get('/get/campaign-id/:campaignId', async (req, res) => {
+    var campaignId = req.params['campaignId'];
+    res.send(await groupService.getGroupsByCampaign(campaignId));
+});
 router.post('/create', async (req, res) => {
     var group = req.body
     res.send(await groupService.createGroup(group));

@@ -27,7 +27,15 @@ class GroupRepository {
         return group_;
     }
 
-
+    async getGroupsByCampaign(campaignId) {
+        let groups = []
+        try {
+            groups = await group.find({ campaignId: campaignId });
+         } catch (error) {
+            logger.error(error)
+        }
+        return groups;
+    }
     async createGroup(_group) {
         console.log("gggggggggg")
         console.log(_group);
