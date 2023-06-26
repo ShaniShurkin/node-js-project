@@ -14,15 +14,6 @@ class DonationService {
     async getDonationById(id) {
         return await donationRepository.getDonationById(id);
     }
-    async getDonationByFundRaiser(fundRaiserId){
-        return await donationRepository.getDonationByFundRaiser(fundRaiserId);
-    }
-    async getDonationByGroup(groupId){
-        return await donationRepository.getDonationByGroup(groupId);
-    }
-    async getDonationByCampaign(campaignId){
-        return await donationRepository.getDonationByCampaign(campaignId);
-    }
     async createDonation(donation) {
         let fundRaiser = await fundRaiserRepo.getFundRaiserById(donation.fundRaiserId);
         fundRaiser = fundRaiser[0]
@@ -66,11 +57,9 @@ class DonationService {
         //)
         
     }
-
     async updateDonation(donation) {
         return await donationRepository.updateDonation(donation);
     }
-
     async deleteDonation(id) {
         return await donationRepository.deleteDonation(id);
     }

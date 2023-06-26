@@ -1,73 +1,87 @@
 const { group } = require('../models/group')
 const { connect } = require('../models/db_connect');
+const { fundRaiser } = require('../models/fund_raiser');
+const { donation } = require('../models/donation');
 const logger = console;//require('../logger/api.logger');
 
 class GroupRepository {
 
     constructor() {
         connect();
+        this.GroupError = new Error("No Such Group")
+
     }
     async getGroups() {
-        let groups = {}
         try {
-            groups = await group.find({});
+            return await group.find({});
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return groups;
     }
-
     async getGroupById(id) {
-        let group_ = {}
+        let _group = {}
         try {
-            group_ = await group.find({ id: id });
+            _group = await group.find({ id: id });
+            if (_group.length == 0) {
+                throw this.GroupError;
+            }
+            return _group;
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return group_;
     }
-
-    async getGroupsByCampaign(campaignId) {
-        let groups = []
+    async getFundRaisersByGroup(groupId) {
         try {
-            groups = await group.find({ campaignId: campaignId });
-         } catch (error) {
-            logger.error(error)
+            let fundRaisers = await fundRaiser.find({ groupId: groupId });
+            if (fundRaisers.length == 0) {
+                throw this.GroupError;
+            }
+            return fundRaisers;
+        } catch (error) {
+            return error
+        }}
+    async getDonationsByGroup(groupId) {
+        try {
+            let donations = await donation.find({ groupId: groupId });
+            if (donations.length == 0) {
+                throw this.GroupError;
+            }
+            return donations
+        } catch (error) {
+            return error
         }
-        return groups;
     }
     async createGroup(_group) {
-        console.log("gggggggggg")
-        console.log(_group);
-        let data = ""
         try {
-            data = await group.create(_group);
+            return await group.create(_group);
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return data
     }
-
     async updateGroup(_group) {
         let data = {};
         try {
             const filter = { id: _group.id };
             const update = _group;
-            data = await group.findOneAndUpdate(filter, update);
-        } catch (error) {
-            logger.error(error)
+            let result = await group.findOneAndUpdate(filter, update);
+            if (result == null) {
+                throw this.GroupError
+            }
+            return result
         }
-        return data
+        catch (error) {
+            return error
+        }
     }
-
     async deleteGroup(id) {
-        let data = {};
         try {
-            data = await group.deleteOne({ id: id });
+            let result = await group.deleteOne({ id: id });
+            if (!result.deletedCount)
+                throw this.GroupError
+            return result
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return { status: `${data.deletedCount > 0 ? true : false}` };
     }
 
 }

@@ -2,29 +2,93 @@ const express = require('express');
 const groupService = require('../services/groupService');
 const router = express.Router();
 const logger = require('../middlewares/logger');
+const {serverError} = require('../middlewares/errorHandling');
 
-router.get('/get', async (req, res) => {
-    res.send(await groupService.getGroups());
+router.get('/', async (req, res, next) => {
+    let result = await groupService.getGroups();
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
-router.get('/get/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     var groupId = req.params['id'];
-    res.send(await groupService.getGroupById(groupId));
+    let result = await groupService.getGroupById(groupId);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
-router.get('/get/campaign-id/:campaignId', async (req, res) => {
-    var campaignId = req.params['campaignId'];
-    res.send(await groupService.getGroupsByCampaign(campaignId));
+router.get('/:groupId/fund-raisers', async (req, res, next) => {
+    var groupId = req.params['groupId'];
+    let result = await groupService.getFundRaisersByGroup(groupId);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
-router.post('/create', async (req, res) => {
+router.get('/:groupId/donations', async (req, res, next) => {
+    let groupId = req.params['groupId'];
+    let result = await groupService.getDonationsByGroup(groupId);
+    
+    if(result instanceof Error){
+        next(result)
+    }
+    else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
+});
+router.post('/create', async (req, res, next) => {
     var group = req.body
-    res.send(await groupService.createGroup(group));
-   
+    let result = await groupService.createGroup(group);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
-router.put('/update', async (req, res) => {
+router.put('/update', async (req, res, next) => {
     var group = req.body
-    res.send(await groupService.updateGroup(group));
+    let result = await groupService.updateGroup(group);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res, next) => {
     var groupId = req.params['id'];
-    res.send(await groupService.deleteGroup(groupId));
+    let result = await groupService.deleteGroup(groupId);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
+router.use(serverError)
+
 module.exports = router;

@@ -7,88 +7,59 @@ class DonationRepository {
 
     constructor() {
         connect();
+        this.DonationError = new Error("No Such Donation")
     }
     async getDonations() {
-        let donations = {}
         try {
-            donations = await donation.find({});
+            return await donation.find({});
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return donations;
     }
-
     async getDonationById(id) {
         let _donation = {}
         try {
             _donation = await donation.find({ id: id });
-            console.log('donations:::', _donation);
-
+            if (_donation.length == 0) {
+                throw this.DonationError;
+            }
+            return _donation;
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return _donation;
     }
-    async getDonationByFundRaiser(fundRaiserId) {
-        let donations = []
-        try {
-            donations = await donation.find({ fundRaiserId: fundRaiserId });
-        } catch (error) {
-            logger.error(error)
-        }
-        return donations;
-    }
-    async getDonationByGroup(groupId) {
-        let donations = []
-        try {
-            donations = await donation.find({ groupId: groupId });
-        } catch (error) {
-            logger.error(error)
-        }
-        return donations;
-    }
-    async getDonationByCampaign(campaignId) {
-        let donations = []
-        try {
-            donations = await donation.find({ campaignId: campaignId });
-        } catch (error) {
-            logger.error(error)
-        }
-        return donations;
-    }
-
     async createDonation(_donation) {
-        let data = ""
         try {
-            data = await donation.create(_donation);
+            return await donation.create(_donation);
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return data
     }
-
     async updateDonation(_donation) {
         let data = {};
         try {
             const filter = { id: _donation.id };
             const update = _donation;
-            data = await donation.findOneAndUpdate(filter, update);
-        } catch (error) {
-            logger.error(error)
+            let result = await donation.findOneAndUpdate(filter, update);
+            if (result == null) {
+                throw this.DonationError
+            }
+            return result
         }
-        return data
+        catch (error) {
+            return error
+        }
     }
-
     async deleteDonation(id) {
-        let data = {};
         try {
-            data = await donation.deleteOne({ id: id });
+            let result = await donation.deleteOne({ id: id });
+            if (!result.deletedCount)
+                throw this.DonationError
+            return result
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return { status: `${data.deletedCount > 0 ? true : false}` };
     }
-
 }
 
 module.exports = new DonationRepository();

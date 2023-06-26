@@ -1,71 +1,99 @@
 const { campaign } = require('../models/campaign')
-const { connect } = require('../models/db_connect');
+const { fundRaiser } = require('../models/fund_raiser')
 
-const logger = console;//require('../logger/api.logger');
+const { connect } = require('../models/db_connect');
+const { group } = require('../models/group');
+const { donation } = require('../models/donation');
 
 class CampaignRepository {
-
+   
     constructor() {
         connect();
+        this.CampaignError = new Error("No Such Campaign")
     }
     async getCampaigns() {
-        let campaigns = {}
         try {
-            campaigns = await campaign.find({});
-            console.log('campaigns:::', campaigns);
-
+            return await campaign.find({});
         } catch (error) {
-            logger.error(error)
-            campaigns = error
-           
+            return error
         }
-        return campaigns;
     }
-
     async getCampaignById(id) {
-        let _campaign = {}
+        
         try {
-            _campaign = await campaign.find({ id: id });
-            console.log('campaigns:::', _campaign);
-
+            let _campaign = await campaign.find({ id: id });
+            if (_campaign.length == 0) {
+                throw this.CampaignError;
+            }
+            return _campaign;
         } catch (error) {
-            logger.error(error)
-            _campaign = error
+            return error
         }
-        return _campaign;
     }
-
-
+    async getDonationsByCampaign(campaignId) {
+        let donations = []
+        try {
+            donations = await donation.find({ campaignId: campaignId });
+            if (donations.length == 0) {
+                throw this.CampaignError;
+            }
+            return donations;
+        } catch (error) {
+            return error
+        }
+    }
+    async getFundRaisersByCampaign(campaignId) {
+        try {
+           let fundRaisers = await fundRaiser.find({ campaignId: campaignId });
+           if (fundRaisers.length == 0) {
+            throw this.CampaignError;
+        }
+        return fundRaisers;
+    } catch (error) {
+        return error
+    }
+    }
+    async getGroupsByCampaign(campaignId) {
+        try {
+            let groups = await group.find({ campaignId: campaignId });
+            if (groups.length == 0) {
+                throw this.CampaignError;
+            }
+            return groups
+         } catch (error) {
+            return group
+        }
+    }
     async createCampaign(_campaign) {
-        let data = ""
         try {
-            data = await campaign.create(_campaign);
+            return await campaign.create(_campaign);
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return data
     }
-
     async updateCampaign(_campaign) {
-        let data = {};
         try {
             const filter = { id: _campaign.id };
             const update = _campaign;
-            data = await campaign.findOneAndUpdate(filter, update);
-        } catch (error) {
-            logger.error(error)
+            let result = await campaign.findOneAndUpdate(filter, update);
+            if (result == null) {
+                throw this.CampaignError
+            }
+            return result
+        } 
+        catch (error) {
+            return error
         }
-        return data
     }
-
     async deleteCampaign(id) {
-        let data = {};
         try {
-            data = await campaign.deleteOne({ id: id });
+            let result = await campaign.deleteOne({ id: id });
+            if(!result.deletedCount)
+                throw this.CampaignError
+            return result
         } catch (error) {
-            logger.error(error)
+            return error
         }
-        return { status: `${data.deletedCount > 0 ? true : false}` };
     }
 
 }

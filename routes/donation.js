@@ -1,40 +1,68 @@
 const express = require('express');
+const {serverError} = require('../middlewares/errorHandling');
 const donationService = require('../services/donationService');
 const router = express.Router();
 const logger = console;
-router.get('/get', async (req, res) => {
-    res.send(await donationService.getDonations());
+router.get('/', async (req, res) => {
+    let result = await donationService.getDonations();
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
-router.get('/get/:id', async (req, res) => {
-    var donationId = req.params['id'];
-    res.send(await donationService.getDonationById(donationId));
-});
-router.get('/get/fund-raiser-id/:fundRaiserId', async (req, res) => {
-    var fundRaiserId = req.params['fundRaiserId'];
-    res.send(await donationService.getDonationByFundRaiser(fundRaiserId));
-});
-router.get('/get/group-id/:groupId', async (req, res) => {
-    var groupId = req.params['groupId'];
-    res.send(await donationService.getDonationByGroup(groupId));
-});
-router.get('/get/campaign-id/:campaignId', async (req, res) => {
-    var campaignId = req.params['campaignId'];
-    res.send(await donationService.getDonationByCampaign(campaignId));
+router.get('/:id', async (req, res) => {
+    let donationId = req.params['id'];
+    let result = await donationService.getDonationById(donationId);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
 router.post('/create', async (req, res) => {
-    var donation = req.body
+    let donation = req.body
     let result = await donationService.createDonation(donation);
-    logger.log("rrrrrrrrrrrrrrrr")
     logger.log(result)
-    res.send(result
-        );
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
 router.put('/update', async (req, res) => {
-    var donation = req.body
-    res.send(await donationService.updateDonation(donation));
+    let donation = req.body
+    let result = await donationService.updateDonation(donation);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
 router.delete('/delete/:id', async (req, res) => {
-    var donationId = req.params['id'];
-    res.send(await donationService.deleteDonation(donationId));
+    let donationId = req.params['id'];
+    let result = await donationService.deleteDonation(donationId);
+    if(result instanceof Error){
+        next(result)
+    }else if(result.error){
+        next(result.error)
+    }
+    else{
+        res.send(result);
+    }
 });
+router.use(serverError)
+
 module.exports = router;
