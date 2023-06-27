@@ -1,17 +1,14 @@
-const isAdmin = (req, res, next) => {
-    if (req.body.role == "admin") {
+const FundRaiserService = require("../services/fundRaiserService");
+
+const isAdmin = async(req, res, next) => {
+    let userId = req.params['userId'];
+    let fundRaiser = await FundRaiserService.getFundRaiserById(userId)
+    fundRaiser = fundRaiser[0]
+    if (fundRaiser.role == "admin") {
          next();
     } else {
-        res.status(403).json({ error: "Unauthorized user" });
-    }
-};
-const isFundRaiser = (req, res, next) => {
-    let roles = ["fundRaiser", "admin"]
-    if (roles.includes(req.body.role)) {
-        next();
-    } else {
-        res.status(403).json({ error: "Unauthorized user" });
+        res.status(403).json({ error: "Unauthorized admin" });
     }
 };
 
-module.exports = { isAdmin, isFundRaiser };
+module.exports = { isAdmin };

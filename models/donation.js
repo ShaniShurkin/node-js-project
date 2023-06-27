@@ -4,15 +4,25 @@ const donationSchema = mongoose.Schema({
     //id: {type: Number, unique: true},
     id:{
         type: Number,
-        required: true
+        required: [true, 'ID is required']
       },
-    fundRaiserId:String,
-    donorName:String,
-    amount: Number,
+    fundRaiserId:{
+      type: String,
+      required: [true, 'Fund raiser id is required']
+    },
+    donorName:{
+      type: String,
+      required: [true, 'Donor name is required']
+    },
+    amount: {
+      type: Number,
+      required: [true, 'amount is required']
+    },
     dedication: String,
-    groupId:Number,
-    campaignId: Number,
-    time: Date
+    time: {
+      type: Date,
+      required: [true, 'Date is required']
+    }
     },{ collection: 'donation' })
 
 const donation = new mongoose.model('donation', donationSchema);

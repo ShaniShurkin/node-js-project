@@ -2,10 +2,12 @@ const express = require('express');
 const campaignService = require('../services/campaignService');
 const router = express.Router();
 const logger = require('../middlewares/logger');
-const {serverError} = require('../middlewares/errorHandling');
+const errorHandleing = require('../middlewares/errorHandling');
+const { isAdmin } = require('../middlewares/authorization');
 router.get('/', async (req, res) => {
     let result = await campaignService.getCampaigns();
-    
+    if(result instanceof Error){
+        next(result)}
     if(result.error){
         next(result.error)
     }
@@ -73,7 +75,7 @@ router.post('/create', async (req, res, next) => {
     }
    
 });
-router.put('/update', async (req, res, next) => {
+router.put('/update/:userId',[isAdmin, async (req, res, next) => {
     let campaign = req.body
     let result = await campaignService.updateCampaign(campaign);
     if(result instanceof Error){
@@ -84,7 +86,7 @@ router.put('/update', async (req, res, next) => {
     else{
         res.send(result);
     }
-});
+}]);
 router.delete('/delete/:id', async (req, res, next) => {
     let campaignId = req.params['id'];
     let result = await campaignService.deleteCampaign(campaignId);
@@ -98,6 +100,6 @@ router.delete('/delete/:id', async (req, res, next) => {
     }
 });
 
-router.use(serverError)
+router.use(errorHandleing)
 
 module.exports = router;

@@ -1,12 +1,9 @@
 const { donation } = require('../models/donation')
-const { connect } = require('../models/db_connect');
-
 const logger = console;//require('../logger/api.logger');
 
 class DonationRepository {
 
     constructor() {
-        connect();
         this.DonationError = new Error("No Such Donation")
     }
     async getDonations() {

@@ -6,10 +6,22 @@ const groupSchema = mongoose.Schema({
         type: Number,
         required: true
       },
-    name: String, 
-    target: Number, 
-    currentAmount: Number,
-    campaignId: Number
+    name: {
+      type: String,
+      required: [true, 'Group name is required']
+    }, 
+    target: {
+      type: Number,
+      required: [true, 'Terget is required']
+    }, 
+    currentAmount:  {
+      type: Number,
+      default: 0
+    },
+    campaignId:{
+      type: Number,
+      required: [true, 'Campaign id is required']
+    }
     },{ collection: 'group' })
 
 const group = new mongoose.model('group', groupSchema);

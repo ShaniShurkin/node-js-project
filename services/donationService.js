@@ -1,12 +1,12 @@
-const campaignRepo  = require('../repositories/campaignRepo');
-const donationRepository  = require('../repositories/donationRepo');
+const campaignRepo = require('../repositories/campaignRepo');
+const donationRepository = require('../repositories/donationRepo');
 const fundRaiserRepo = require('../repositories/fundRaiserRepo');
 const groupRepo = require('../repositories/groupRepo');
 
 
 class DonationService {
 
-    constructor() {}
+    constructor() { }
 
     async getDonations() {
         return await donationRepository.getDonations();
@@ -15,47 +15,31 @@ class DonationService {
         return await donationRepository.getDonationById(id);
     }
     async createDonation(donation) {
-        let fundRaiser = await fundRaiserRepo.getFundRaiserById(donation.fundRaiserId);
-        fundRaiser = fundRaiser[0]
-        let f = {
-            id: fundRaiser.id,
-            currentAmount: fundRaiser.currentAmount + donation.amount,
-          }
-        await fundRaiserRepo.updateFundRaiser(f);
-        //console.log(fundRaiser);
-        let group = await groupRepo.getGroupById(fundRaiser.groupId);
-        group = group[0];
-        //console.log(group);
-        let g = {
-            id: group.id,
-            currentAmount: group.currentAmount + donation.amount,
-          }
-        let campaign = await campaignRepo.getCampaignById(group.campaignId);
-        campaign = campaign[0];
-        let c = {
-            id: campaign.id,
-            currentAmount: campaign.currentAmount + donation.amount,
-          }
-        await campaignRepo.updateCampaign(c);
-        donation.date = new Date();
-        await donationRepository.createDonation(donation);
-        let res = `campaign: ${campaign.name}\n
-        group: ${group.name}\n
-        fund raiser: ${fundRaiser.name}\n
-        donor: ${donation.donorName}\n
-        amount: ${donation.amount}\n`;
-        res += donation.dedication?`dedication: ${donation.dedication}`:"";
-        return res;
-        // // if the user ID is 0, skip to the next route
-        //     if (req.params.id === '0') next('route')
-        //     // otherwise pass the control to the next middleware function in this stack
-        //     else next()
-        // }, (req, res, next) => {
-        //     // send a regular response
-        //     res.send('regular')
-        //}
-        //)
-        
+        try {
+            let fundRaiser = await fundRaiserRepo.getFundRaiserById(donation.fundRaiserId);
+            if (fundRaiser instanceof Error) {
+                return fundRaiser
+            }
+            fundRaiser = fundRaiser[0]
+            await this.updateCurrentFundRaiser(fundRaiser, donation.amount)
+            let group = await groupRepo.getGroupById(fundRaiser.groupId);
+            group = group[0];
+            await this.updateCurrentGroup(group, donation.amount);
+            let campaign = await campaignRepo.getCampaignById(group.campaignId);
+            campaign = campaign[0];
+            await this.updateCurrentCampaign(campaign, donation.amount);
+            donation.date = new Date();
+            await donationRepository.createDonation(donation);
+            let res = `campaign: ${campaign.name}\n
+            group: ${group.name}\n
+            fund raiser: ${fundRaiser.name}\n
+            donor: ${donation.donorName}\n
+            amount: ${donation.amount}\n`;
+            res += donation.dedication ? `dedication: ${donation.dedication}` : "";
+            return res;
+        } catch (error) {
+            return error;
+        }
     }
     async updateDonation(donation) {
         return await donationRepository.updateDonation(donation);
@@ -63,7 +47,27 @@ class DonationService {
     async deleteDonation(id) {
         return await donationRepository.deleteDonation(id);
     }
-
+    async updateCurrentFundRaiser(fundRaiser, amount) {
+        let f = {
+            id: fundRaiser.id,
+            currentAmount: fundRaiser.currentAmount + amount,
+        }
+        await fundRaiserRepo.updateFundRaiser(f);
+    }
+    async updateCurrentGroup(group, amount) {
+        let g = {
+            id: group.id,
+            currentAmount: group.currentAmount + amount,
+        }
+        await groupRepo.updateGroup(g);
+    }
+    async updateCurrentCampaign(campaign, amount) {
+        let c = {
+            id: campaign.id,
+            currentAmount: campaign.currentAmount + amount,
+        }
+        await campaignRepo.updateCampaign(c);
+    }
 }
 
 module.exports = new DonationService();

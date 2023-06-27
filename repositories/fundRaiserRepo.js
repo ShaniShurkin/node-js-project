@@ -1,12 +1,9 @@
 const { fundRaiser } = require('../models/fund_raiser')
-const { connect } = require('../models/db_connect');
 const { donation } = require('../models/donation');
-const logger = console;//require('../logger/api.logger');
 
 class FundRaiserRepository {
 
     constructor() {
-        connect();
         this.FundRaiserError = new Error("No Such Fund Raiser")
     }
     async getFundRaisers() {

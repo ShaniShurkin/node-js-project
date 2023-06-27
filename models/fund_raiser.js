@@ -4,7 +4,6 @@ const fundRaiserSchema = mongoose.Schema({
     //id: {type: String, unique: true},
     id:{
         type: String,
-        unique: [false, "Such an ID exists"],
         required: [true, 'ID required']
       },
     name: {
@@ -23,8 +22,14 @@ const fundRaiserSchema = mongoose.Schema({
       type: Number,
       default: 0
     },
-    groupId:Number,
-    campaignId: Number
+    groupId:{
+      type: Number,
+      required: [true, 'Group id is required']
+    },
+    campaignId: {
+      type: Number,
+      required: [true, 'Campaign id is required']
+    }
     },{ collection: 'fundRaiser' })
 
     const fundRaiser = new mongoose.model('fundRaiser', fundRaiserSchema);

@@ -2,7 +2,7 @@ const express = require('express');
 const fundRaiserService = require('../services/fundRaiserService');
 const router = express.Router();
 const logger = require('../middlewares/logger');
-const {serverError} = require('../middlewares/errorHandling');
+const errorHandleing = require('../middlewares/errorHandling');
 
 router.get('/', async (req, res, next) => {
     let result = await fundRaiserService.getFundRaisers();
@@ -75,6 +75,6 @@ router.delete('/delete/:id', async (req, res, next) => {
         res.send(result);
     }
 });
-router.use(serverError)
+router.use(errorHandleing)
 
 module.exports = router;

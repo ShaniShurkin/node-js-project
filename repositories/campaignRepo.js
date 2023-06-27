@@ -1,15 +1,13 @@
 const { campaign } = require('../models/campaign')
 const { fundRaiser } = require('../models/fund_raiser')
-
-const { connect } = require('../models/db_connect');
 const { group } = require('../models/group');
 const { donation } = require('../models/donation');
 
 class CampaignRepository {
    
     constructor() {
-        connect();
         this.CampaignError = new Error("No Such Campaign")
+        this.CampaignError.status = 404;
     }
     async getCampaigns() {
         try {

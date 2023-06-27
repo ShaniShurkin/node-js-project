@@ -1,9 +1,15 @@
- const serverError = function(err, req, res, next){
-    console.error("Oooopsss, an error occurred: " + err.stack)
-    res.status(500).send(`error: ${err}\n Something went wrong, try later`)
+module.exports = function(err, req, res, next){
+    //res.status(500).send(`${err}\n `)
+    console.log("Middleware Error Hadnling");
+    const errStatus = err.statusCode || 500;
+    const errMsg = err.message || 'Something went wrong, please try again later';
+    res.status(errStatus)
+    .send(`${errMsg}`)
+    // .json({
+    //     success: false,
+    //     status: errStatus,
+    //     message: errMsg,
+    //     stack: process.env.NODE_ENV === 'development' ? err.stack : {}
+    // })
 }
-const clientError  = function(err, req, res, next){
-    console.error("Oooopsss, an error occurred: " + err.stack)
-    res.status(500).send(`error: ${err}\n Something went wrong!`)
-}   
-module.exports = {serverError, clientError}
+  
