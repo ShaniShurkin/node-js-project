@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "a1c8856b-1421-4360-a97d-eccc39bc5e80",
+		"name": "groups",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/groups/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"_id\": \"649754e7a03aba77851735b9\",\r\n        \"code\": 1,\r\n        \"name\": \"group2\",\r\n        \"target\": 270000,\r\n        \"currentAmount\": 55000,\r\n        \"fundRaisers\":[\r\n            {\r\n        \"_id\": \"64949f525886240bdc5fecac\",\r\n        \"id\": \"025298936\",\r\n        \"name\": \"Moshe Berg\",\r\n        \"target\": 25500,\r\n        \"currentAmount\": 3350,\r\n        \"__v\": 0\r\n    }\r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/groups/create",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/groups/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/groups/delete/2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						"delete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Yeshiva graduates\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/groups/update",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get donations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/groups/1/donations",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						"1",
+						"donations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get fund raisers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/groups/1/fund-raisers",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"groups",
+						"1",
+						"fund-raisers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
